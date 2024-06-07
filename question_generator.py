@@ -30,15 +30,15 @@ else:
     num_2 = random.randit(1, 15)
 
 # Perform the chosen operation
-result = operation(x, y)
+result = operation(num_1, num_2)
 
 # Generate the question based on the operation
 if operation == addition:
-    question = f"What is {x} + {y}?"
+    question = f"{num_1} + {num_2}="
 elif operation == subtraction:
-    question = f"What is {x} - {y}?"
+    question = f"{num_1} - {num_2}="
 elif operation == multiplication:
-    question = f"What is {x} * {y}?"
+    question = f"{num_1} * {num_2}="
 
 # Print the question
 print("Question:", question)
