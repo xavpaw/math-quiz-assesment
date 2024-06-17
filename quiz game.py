@@ -38,7 +38,8 @@ want_instructions = yes_no("Do you want to read the instructions? ")
 if want_instructions == "yes":
     instruction()
 
-# difficulty selection
+
+# difficulty selection from Chat GPT
 def int_check(prompt, low, high):
     """
     Prompt the user to input an integer within a specified range.
@@ -61,66 +62,83 @@ def int_check(prompt, low, high):
         except ValueError:
             print("Please enter a valid integer.")
 
+
 # random equation generator
 import random
 
-# Define operations
-def addition(x, y):
-    return x + y
 
-def subtraction(x, y):
-    return x - y
+# Define operation functions
+def addition(a, b):
+    return a + b
 
-def multiplication(x, y):
-    return x * y
 
-# Store correct answers
-correct_answers = 0
+def subtraction(a, b):
+    return a - b
 
-# difficullty
-# Example usage
-difficulty = int_check("Select difficulty (level 1 / easy, level 2 / medium, level 3 / hard): ", low=1, high=3)
-print(f"You selected difficulty level {difficulty}.")
 
-# Generate and ask 20 questions
-for _ in range(20):
+def multiplication(a, b):
+    return a * b
 
-    if difficulty == "3":
-        num_1 = random.randint(1, 55)
-        num_2 = random.randint(1, 55)
-    elif difficulty == "2":
-        num_1 = random.randint(1, 30)
-        num_2 = random.randint(1, 30)
+
+def quiz():
+    correct_answers = 0
+
+    while True:
+        try:
+            difficulty = int(input("Enter the difficulty level (1 / easy, 2 / medium, or 3 / hard): "))
+            if difficulty in [1, 2, 3]:
+                break
+            else:
+                print("Invalid input. Please enter a number between 1, 2, or 3.")
+        except ValueError:
+            print("Invalid input. Please enter an integer.")
+
+    if difficulty == 3:
+        max_num = 55
+    elif difficulty == 2:
+        max_num = 30
     else:
-        num_1 = random.randint(1, 15)
-        num_2 = random.randint(1, 15)
+        max_num = 15
 
-    # List of operations
-    operations = [addition, subtraction, multiplication]
+    try:
+        for _ in range(20):  # Assuming you have 20 questions
+            num_1 = random.randint(1, max_num)
+            num_2 = random.randint(1, max_num)
 
-# Choose a random operation
-    operation = random.choice(operations)
+            # List of operations
+            operations = [addition, subtraction, multiplication]
 
-    # Perform the chosen operation
-    result = operation(num_1, num_2)
+            # Choose a random operation
+            operation = random.choice(operations)
 
-# Choose a random operation
-    if operation == addition:
-        question = f"{num_1} + {num_2} = "
-    elif operation == subtraction:
-        question = f"{num_1} - {num_2} = "
-    elif operation == multiplication:
-        question = f"{num_1} * {num_2} = "
+            # Perform the chosen operation
+            result = operation(num_1, num_2)
 
-    # Ask the question and get user input
-    answer = input(question)
+            # Ask the question and get user input from ChatGPT
+            question = f"What is {num_1} {'+' if operation == addition else '-' if operation == subtraction else '*'} {num_2}? "
+            while True:
+                answer = input(question)
+                if not answer.strip() or not answer.lstrip('-').isdigit():
+                    print("Please enter a valid number.")
+                else:
+                    break
 
-    # Check if the answer is correct
-    if int(answer) == result:
-        print("Correct!")
-        correct_answers += 1
-    else:
-        print("Incorrect!")
+            # Convert the input to an integer
+            answer = int(answer)
 
-# Display the final score
-print(f"You got {correct_answers} out of 20 questions correct.")
+            # Check the answer
+            if answer == result:
+                print("Correct!")
+                correct_answers += 1
+            else:
+                print("Incorrect!")
+
+    except ValueError:
+        print("Please enter a valid number.")
+
+    # Display the final score
+    print(f"You got {correct_answers} out of 20 questions correct.")
+
+
+# Run the quiz
+quiz()
